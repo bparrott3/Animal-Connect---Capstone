@@ -1,0 +1,58 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+		<title>Auth0 App</title> 
+	</head> 
+
+    <style> 
+        pre
+        {
+            width:450px; 
+            word-wrap:break-word;
+            text-align: left;
+        }
+    </style>
+
+ 
+	<body>
+        <p>Gan 78</p>
+
+        {% if session %}
+            <center>
+            <h1>Welcome {{user_obj.userinfo.nickname}}!</h1>
+            <p><a href="/logout">Logout</a></p>
+            <br>
+            <br>
+            <b><p>Your owner_id is: </p></b>
+            <p>{{user_obj.userinfo.sub}}</p>
+            <br>
+            <br>
+            <b><p>Your JWT is: </p></b>
+            </center>
+
+            <div><pre>{{user_obj.id_token}}</pre></div>
+
+            <script>
+                let obj = '{{ user_obj }}';
+                let jwt = '{{ user_jwt }}';
+                let url = 'https://final-project-412700.wl.r.appspot.com/owners';
+
+                fetch(url, 
+                {
+                    method: 'POST', 
+                    headers: new Headers
+                    ({
+                        'Authorization': 'Bearer ' + jwt
+                    })
+                });
+            </script>
+
+        {% else %}
+            <center>
+            <h1>Welcome Guest</h1>
+            <p><a href="/login">Login</a></p>
+            </center>
+        {% endif %}
+    </body>
+    
+</html> 
