@@ -36,8 +36,33 @@
             <div id="menu-btn" class="fas fa-bars"></div>
         </div>
 
-        <!-- login form -->
+        <script>
+            let url = "https://animal-168888.wl.r.appspot.com/jwt";
 
+            fetch(url, {
+                    method: 'GET'
+                })
+                .then(function(res) 
+                {
+                    return res;
+                })
+                .then(function(output) 
+                {
+                    var jwt = output;
+                    
+                    if (jwt !== "") {
+                        const buttonElement = document.getElementById('login-btn');
+                        buttonElement.textContent = 'Logout';
+                    }
+                })
+                .catch(function(error)
+                {
+                    console.log(error);
+                })
+        </script>
+
+        
+        <!-- login form> 
         <form action="" class="login-form">
 
             <h3>Login form</h3>
@@ -51,6 +76,8 @@
             <a href="#" class="btn">login</a>
 
         </form>
+        <end of log form-->
+        
 
     </header>
 
