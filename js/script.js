@@ -1,8 +1,12 @@
 let login = document.querySelector(".login-form");
 
 document.querySelector("#login-btn").onclick = () =>{
-    login.classList.toggle('active');
-    navbar.classList.remove('active');
+    if (this.textContent === "Login") {
+        window.location.href = "https://animal-168888.wl.r.appspot.com/login";
+    } 
+    else {
+        window.location.href = "https://animal-168888.wl.r.appspot.com/logout";
+    }
 }
 
 let navbar = document.querySelector(".header .navbar");
