@@ -8,7 +8,14 @@
 </head>
 <body>
     <div class="filter-bar">
-        <!-- Filters and search bar here -->
+        <input type="text" id="searchInput" placeholder="Search pets..." onkeyup="filterPets()">
+        <select id="typeFilter" onchange="filterPets()">
+            <option value="all">All Types</option>
+            <option value="dog">Dogs</option>
+            <option value="cat">Cats</option>
+            <!-- Add other types as needed -->
+        </select>
+        <!-- Implement additional filters as needed -->
     </div>
     <div class="pets-container">
         <!-- Dynamic content will be loaded here -->
