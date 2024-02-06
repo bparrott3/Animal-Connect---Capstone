@@ -1,23 +1,22 @@
-let login = document.querySelector(".login-form");
+// let login = document.querySelector(".login-form");
 
-document.querySelector("#login-btn").onclick = () =>{
+document.querySelector("#login-btn").onclick = function() {
     if (this.textContent === "Login") {
         window.location.href = "https://animal-168888.wl.r.appspot.com/login";
-    } 
-    else {
+    } else {
         window.location.href = "https://animal-168888.wl.r.appspot.com/logout";
     }
-}
+};
 
 let navbar = document.querySelector(".header .navbar");
 
 document.querySelector('#menu-btn').onclick = () =>{
-    login.classList.remove('active');
+    // login.classList.remove('active');
     navbar.classList.toggle('active');
 }
 
 window.onscroll = () =>{
-    login.classList.remove('active');
+    // login.classList.remove('active');
     navbar.classList.remove('active');
 }
 
