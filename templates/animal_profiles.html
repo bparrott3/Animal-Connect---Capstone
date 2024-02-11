@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Animals</title>
+    <link rel="stylesheet" href="./static/css/style.css"> 
+</head>
+<body>
+    <h1>Animal Profiles</h1>
+    <ul>
+        {% for profile in profiles %}
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <img src="{{ profile['image'] }}" alt="Animal Image" style="width:100px; height:auto; margin-right: 20px;">
+                <div>
+                    <div>Type: {{ profile['type'] }}</div>
+                    <div>Breed: {{ profile['breed'] }}</div>
+                    <div>Disposition: {{ profile['disposition'] }}</div>
+                    <div>Availability: {{ profile['availibility'] }}</div>
+                    <div>Description: {{ profile['description'] }}</div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+    </ul>
+    <script src="./static/js/browse.js"></script> <!-- JavaScript for dynamic content and filters -->
+</body>
+</html>
