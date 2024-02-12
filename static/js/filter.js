@@ -1,19 +1,28 @@
-function filterPets() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+function filterProfiles() {
     const typeFilter = document.getElementById('typeFilter').value;
+    const breedFilter = document.getElementById('breedFilter').value;
+    const dispositionFilter = document.getElementById('dispositionFilter').value;
+    const availabilityFilter = document.getElementById('availabilityFilter').value;
+    const descriptionKeyword = document.getElementById('descriptionSearch').value.toLowerCase();
 
-    // Placeholder for fetching and filtering data. Replace with AI-generated logic or API calls.
-    const animals = [
-        { name: "Buddy", type: "dog", img: "buddy.jpg" },
-        { name: "Whiskers", type: "cat", img: "whiskers.jpg" },
-        // Add more animals
-    ];
+    // Assuming profiles are rendered and have data attributes for filtering
+    const profiles = document.querySelectorAll('.profile'); // Ensure this selector matches your rendered profiles
 
-    const filteredAnimals = animals.filter(animal => {
-        return (animal.type === typeFilter || typeFilter === 'all') && animal.name.toLowerCase().includes(searchInput);
+    profiles.forEach(profile => {
+        const type = profile.getAttribute('data-type');
+        const breed = profile.getAttribute('data-breed');
+        const disposition = profile.getAttribute('data-disposition');
+        const availability = profile.getAttribute('data-availability');
+        const description = profile.getAttribute('data-description').toLowerCase();
+
+        const matchesFilters = (typeFilter === 'all' || type === typeFilter) &&
+                                (breedFilter === 'all' || breed === breedFilter) &&
+                                (dispositionFilter === 'all' || disposition === dispositionFilter) &&
+                                (availabilityFilter === 'all' || availability === availabilityFilter) &&
+                                description.includes(descriptionKeyword);
+
+        profile.style.display = matchesFilters ? '' : 'none';
     });
-
-    displayAnimals(filteredAnimals);
 }
 
 function displayAnimals(animals) {
