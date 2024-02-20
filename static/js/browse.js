@@ -3,14 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchProfiles() {
-    // Placeholder: Replace with actual AJAX call to fetch profiles
-    const profiles = [
-        { name: "Buddy", type: "Dog", breed: "Labrador", disposition: "Friendly", availability: "Available", description: "Loves walks", image: "buddy.jpg" },
-        { name: "Whiskers", type: "Cat", breed: "Siamese", disposition: "Shy", availability: "Adopted", description: "Quiet and loves to cuddle", image: "whiskers.jpg" },
-        // Add more profiles as needed
-    ];
+    const typeFilter = document.getElementById('typeFilter').value;
+    const breedFilter = document.getElementById('breedFilter').value;
+    // Include other filters as needed
 
-    displayProfiles(profiles);
+    fetch(`/api/profiles?type=${typeFilter}&breed=${breedFilter}`)
+    .then(response => response.json())
+    .then(data => {
+        displayProfiles(data); // Assumes your endpoint returns an array of profiles
+    })
+    .catch(error => console.error('Error fetching profiles:', error));
 }
 
 function filterProfiles() {
