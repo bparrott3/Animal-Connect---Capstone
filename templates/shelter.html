@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelter Name</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            color: #333;
+        }
+    
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+    
+        header {
+            background: #ffa500; /* Bright orange */
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #ff8c00 3px solid; /* Darker shade of orange */
+        }
+    
+        header h1 {
+            margin: 0;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+    
+        .add-profile-btn {
+            display: inline-block;
+            background: #ff8c00; /* Darker shade of orange */
+            color: #ffffff;
+            padding: 10px 20px;
+            margin: 20px auto;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        .add-profile-btn:hover {
+            background: #e85d00; /* Even darker shade for hover state */
+        }
+    
+        #pet-profiles {
+            background: #ffffff;
+            padding: 20px;
+            margin-top: 20px;
+        }
+    
+        .pet-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    
+        .pet-profile h3, .pet-profile p {
+            margin: 0 20px 0 0;
+            padding: 0;
+        }
+    
+        .contact-info {
+            background: #ffa500; /* Bright orange */
+            color: #ffffff;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    
+        .contact-info h2, .contact-info p {
+            margin: 10px 0;
+        }
+    
+        footer {
+            background: #ff8c00; /* Darker shade of orange */
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Shelter Name</h1>
+            <a href="add_profile.html" class="add-profile-btn">Add Animal Profile</a>
+        </header>
+
+        <section id="pet-profiles">
+            <h2>Our Pets</h2>
+            <!-- Placeholder for pet profiles; replace with dynamic content -->
+            <div class="pet-profile">
+                <h3>Fido</h3>
+                <p>Type: Dog - Breed: Labrador - Disposition: Good with children</p>
+            </div>
+            <div class="pet-profile">
+                <h3>Whiskers</h3>
+                <p>Type: Cat - Breed: Siamese - Disposition: Needs to be the only pet</p>
+            </div>
+            <!-- Add more pet profiles here -->
+        </section>
+
+        <footer>
+            <div class="contact-info">
+                <h2>Contact Us</h2>
+                <!-- This section can be updated with actual contact information -->
+                <p>Address: 123 Pet Street, Animal Town, USA</p>
+                <p>Phone: (555) 123-4567</p>
+                <p>Email: info@sheltername.com</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -8,6 +8,14 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/shelter', methods=['GET'])
+def shelter():
+    return render_template('shelter.html')
+
+@app.route('/add_profile.html', methods=['GET'])
+def add_profile():
+    return render_template('add_profile.html')
+
 # @app.route('/browse', methods=['GET'])
 # def database():
 #     db = get_db_connection()
