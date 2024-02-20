@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Animal Profile</title>
+    <link rel="stylesheet" href="style.css"> <!-- Adjust the path as needed -->
+</head>
+<body>
+    <h1>Add New Animal Profile</h1>
+    <form id="addProfileForm" action="/insert_animal_profiles" method="post" enctype="multipart/form-data">
+        <label for="type">Type:</label>
+        <input type="text" id="type" name="type" required>
+        
+        <label for="breed">Breed:</label>
+        <input type="text" id="breed" name="breed" required>
+        
+        <label for="disposition">Disposition:</label>
+        <input type="text" id="disposition" name="disposition" required>
+        
+        <label for="availability">Availability:</label>
+        <select id="availability" name="availability">
+            <option value="Available">Available</option>
+            <option value="Adopted">Adopted</option>
+            <!-- Add other options as needed -->
+        </select>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+        
+        <label for="image">Image URL:</label>
+        <input type="text" id="image" name="image">
+        
+        <!-- Uncomment below if you plan to accept image uploads instead of URL -->
+        <!-- <label for="imageFile">Upload Image:</label>
+        <input type="file" id="imageFile" name="imageFile"> -->
+        
+        <button type="submit">Add Profile</button>
+    </form>
+    <script src="addProfile.js"></script> <!-- JavaScript for handling the form submission -->
+</body>
+</html>
