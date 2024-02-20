@@ -24,7 +24,7 @@ def index():
 # def browse_page():
 #     return render_template('browse.html')
 
-@app.route('/animal_profiles')
+@app.route('/animal_profiles', methods=['GET'])
 def animal_profiles():
     conn = get_db_connection()  # Get database connection
     cursor = conn.cursor(dictionary=True)  # Use dictionary cursor to directly get results as dictionaries
@@ -39,7 +39,7 @@ def animal_profiles():
     
     return render_template('animal_profiles.html', profiles=profiles)
 
-@app.route('/insert_animal_profiles')
+@app.route('/insert_animal_profiles', methods=['GET', 'POST'])
 def insert_animal_profiles():
     connection = get_db_connection()
     cursor = connection.cursor()
