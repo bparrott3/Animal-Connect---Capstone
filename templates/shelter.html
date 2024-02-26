@@ -97,33 +97,37 @@
 <body>
     <div class="container">
         <header>
-            <h1>Shelter Name</h1>
-            <a href="add_profile.html" class="add-profile-btn">Add Animal Profile</a>
+            <!-- Use shelter_data to dynamically display the shelter's name -->
+            <h1>{{ shelter_data['name'] }}</h1>
+            <a href="/{{ shelter_data['id'] }}/add_profile.html" class="add-profile-btn">Add Animal Profile</a>
         </header>
 
         <section id="pet-profiles">
             <h2>Our Pets</h2>
-            <!-- Placeholder for pet profiles; replace with dynamic content -->
-            <div class="pet-profile">
-                <h3>Fido</h3>
-                <p>Type: Dog - Breed: Labrador - Disposition: Good with children</p>
+            {% for profile in pet_profiles %}
+            <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                <img src="{{ profile['image'] }}" alt="Animal Image" style="width:100px; height:auto; margin-right: 20px;">
+                <div>
+                    <div>Type: {{ profile['type'] }}</div>
+                    <div>Breed: {{ profile['breed'] }}</div>
+                    <div>Disposition: {{ profile['disposition'] }}</div>
+                    <div>Availability: {{ profile['availability'] }}</div>
+                    <div>Description: {{ profile['description'] }}</div>
+                </div>
             </div>
-            <div class="pet-profile">
-                <h3>Whiskers</h3>
-                <p>Type: Cat - Breed: Siamese - Disposition: Needs to be the only pet</p>
-            </div>
-            <!-- Add more pet profiles here -->
+        {% endfor %}
         </section>
 
         <footer>
             <div class="contact-info">
-                <h2>Contact Us</h2>
-                <!-- This section can be updated with actual contact information -->
-                <p>Address: 123 Pet Street, Animal Town, USA</p>
-                <p>Phone: (555) 123-4567</p>
-                <p>Email: info@sheltername.com</p>
+                <h2>Contact Information</h2>
+                <!-- Update this section with actual contact information from shelter_data -->
+                <p>Address: {{ shelter_data['address'] }}</p>
+                <p>Phone: {{ shelter_data['phone'] }}</p>
+                <p>Email: {{ shelter_data['email'] }}</p>
             </div>
         </footer>
     </div>
 </body>
+
 </html>
