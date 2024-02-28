@@ -7,13 +7,17 @@
     <title>Browse Animals</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="stylesheet" href="./static/css/style.css"> 
 </head>
 <body>
-    <h1>Animal Profiles</h1>
-        <div>
+    <header class="site-header">
+        <h1>Animal Profiles</h1>
+    </header>
+
+    <section class="filter-section">
+        <div class="filter-container">
             <label for="typeFilter">Type:</label>
-            <select id="typeFilter">
+            <select id="typeFilter" class="select-style">
                 <option value="all">All Types</option>
                 <option value="dog">Dog</option>
                 <option value="cat">Cat</option>
@@ -21,13 +25,13 @@
             </select>
         
             <label for="breedFilter">Breed:</label>
-            <select id="breedFilter">
+            <select id="breedFilter" class="select-style">
                 <option value="all">All Breeds</option>
-                <!-- Options will be dynamically populated based on the selected type or all available breeds -->
+                <!-- Options will be dynamically populated -->
             </select>
         
             <label for="dispositionFilter">Disposition:</label>
-            <select id="dispositionFilter">
+            <select id="dispositionFilter" class="select-style">
                 <option value="all">All Dispositions</option>
                 <option value="friendly">Friendly</option>
                 <option value="shy">Shy</option>
@@ -35,7 +39,7 @@
             </select>
         
             <label for="availabilityFilter">Availability:</label>
-            <select id="availabilityFilter">
+            <select id="availabilityFilter" class="select-style">
                 <option value="all">All</option>
                 <option value="available">Available</option>
                 <option value="adopted">Adopted</option>
@@ -43,26 +47,31 @@
             </select>
         
             <label for="descriptionSearch">Description Keyword:</label>
-            <input type="text" id="descriptionSearch" placeholder="Search in descriptions...">
+            <input type="text" id="descriptionSearch" class="input-style" placeholder="Search in descriptions...">
         
-            <button onclick="filterProfiles()">Filter</button>
+            <button onclick="filterProfiles()" class="btn-filter">Filter</button>
         </div>
-    <ul>
-        {% for profile in profiles %}
-            <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                <img src="{{ profile['image'] }}" alt="Animal Image" style="width:100px; height:auto; margin-right: 20px;">
-                <div>
-                    <div>Type: {{ profile['type'] }}</div>
-                    <div>Breed: {{ profile['breed'] }}</div>
-                    <div>Disposition: {{ profile['disposition'] }}</div>
-                    <div>Availability: {{ profile['availibility'] }}</div>
-                    <div>Description: {{ profile['description'] }}</div>
-                </div>
-            </div>
-        {% endfor %}
+    </section>
+    
+    <section class="profile-section">
+        <ul class="profile-list">
+            {% for profile in profiles %}
+                <li class="profile-item">
+                    <div class="profile-card">
+                        <img src="{{ profile['image'] }}" alt="Animal Image" class="profile-image">
+                        <div class="profile-info">
+                            <div>Type: {{ profile['type'] }}</div>
+                            <div>Breed: {{ profile['breed'] }}</div>
+                            <div>Disposition: {{ profile['disposition'] }}</div>
+                            <div>Availability: {{ profile['availibility'] }}</div>
+                            <div>Description: {{ profile['description'] }}</div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
 
-
-    </ul>
     <script src="./static/js/browse.js"></script> <!-- JavaScript for dynamic content and filters -->
 </body>
 </html>
