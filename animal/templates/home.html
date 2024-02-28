@@ -15,8 +15,6 @@
 
  
 	<body>
-        <p>Gan 78</p>
-
         {% if session %}
             <center>
             <h1>Welcome {{user_obj.userinfo.nickname}}!</h1>
@@ -32,20 +30,6 @@
 
             <div><pre>{{user_obj.id_token}}</pre></div>
 
-            <script>
-                let obj = '{{ user_obj }}';
-                let jwt = '{{ user_jwt }}';
-                let url = 'https://final-project-412700.wl.r.appspot.com/owners';
-
-                fetch(url, 
-                {
-                    method: 'POST', 
-                    headers: new Headers
-                    ({
-                        'Authorization': 'Bearer ' + jwt
-                    })
-                });
-            </script>
 
         {% else %}
             <center>

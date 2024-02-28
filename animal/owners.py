@@ -102,22 +102,25 @@ def verify_jwt(request):
                                 "No RSA key in JWKS"}, 401)
 
 
-# CREATE an owner: 3 attributes
-# 1) jwt-sub id = owner's unique id
-# 2) name
-# 3) email
-# 4) list of boats
-# 5) self link
-# return 201 if created
-# return 401 covered by verify_jwt()
-# auto-gen id not displayed, name does not have to be unique
-# assum body is valid
 
-@bp.route('', methods=['GET','POST'])
-def add_owner_get_owners():
-    if not ('application/json' in request.accept_mimetypes):
-            msg = "{'Error': 'Client's acceptable MIME type is not supported by the endpoint'}"
-            return (msg, 406)
+
+@bp.route('', methods=['GET'])
+def get_owners():
+    
+    if  request.method == 'GET':
+        query = client.query(kind=constants.owners)
+        results = list(query.fetch())
+
+        return results, 200
+
+
+    else:
+        return ('Method not recognized', 405)
+    
+
+
+@bp.route('/admin', methods=['POST'])
+def add_admin():
     
     if request.method == 'POST':
         payload = verify_jwt(request)
@@ -128,16 +131,15 @@ def add_owner_get_owners():
             return ({'exisiting': owner_info}, 200)
 
         else:
-            if not ('application/json' in request.content_type):
-                msg = "{'Error': 'Unsupported MIME type was sent, please send JSON type only'}"
-                return (msg, 415)
-        
             new_owner = datastore.entity.Entity(key=client.key(constants.owners))
             new_owner.update({"owner_id": jwt_sub,
-                              "name": payload["nickname"], 
-                              "email": payload["email"],
-                              "boats": []
-                             })
+                            "first_name": "",
+                            "last_name": "", 
+                            "phone": "",
+                            "address": "",
+                            "email": payload["email"],
+                            "access": "admin"
+                            })
             new_owner["self"] = request.base_url + "/" + jwt_sub
             client.put(new_owner)
 
@@ -146,41 +148,103 @@ def add_owner_get_owners():
             res.status_code = 201
             return res
 
-    elif  request.method == 'GET':
-        query = client.query(kind=constants.owners)
-        results = list(query.fetch())
+    else:
+        return ('Method not recognized', 405)
 
-        res = make_response(results)
-        res.mimetype = 'application/json'
-        res.status_code = 200
-        return res
+
+
+@bp.route('/member', methods=['POST'])
+def add_member():
+    
+    if request.method == 'POST':
+        payload = verify_jwt(request)
+        jwt_sub = payload["sub"]
+
+        owner_info = _has_owner(jwt_sub)
+        if owner_info:
+            return ({'exisiting': owner_info}, 200)
+
+        else:
+            new_owner = datastore.entity.Entity(key=client.key(constants.owners))
+            new_owner.update({"owner_id": jwt_sub,
+                            "first_name": "",
+                            "last_name": "", 
+                            "phone": "",
+                            "address": "",
+                            "email": payload["email"],
+                            "access": "member"
+                            })
+            new_owner["self"] = request.base_url + "/" + jwt_sub
+            client.put(new_owner)
+
+            res = make_response(new_owner)
+            res.mimetype = 'application/json'
+            res.status_code = 201
+            return res
 
     else:
         return ('Method not recognized', 405)
+
+
+
+@bp.route('/<owner_id>', methods=['GET'])
+def get_owner(owner_id):
+    if  request.method == 'GET':
+        query = client.query(kind=constants.owners)
+        results = list(query.fetch())
+
+        for e in results:
+            if str(e["owner_id"]) == str(owner_id):
+                return (json.dumps(e), 200)
+
+        return ('User not found', 404)
     
 
-# NOT REQUIRED, ONLY FOR DEVELOPER
-# Only deleting owners off the database, not from Auth0
-# @bp.route('/<owner_id>', methods=['DELETE'])
-# def delete_owner(owner_id):
-#     if  request.method == 'DELETE':
-#         payload = verify_jwt(request)
-#         jwt_sub = payload["sub"]
 
-#         if str(jwt_sub) != str(owner_id):
-#             msg = {'Error': 'JWT is valid but it does not match with this owner_id'}
-#             return (msg, 403)
+@bp.route('/database/<id>', methods=['PATCH'])
+def patch_owners(id):
+    if request.method == 'PATCH':
+        owner_key = client.key(constants.owners, int(id))
+        owner = client.get(key=owner_key)
+        if not owner:
+            return "Owner not found", 404
+    
+        try:
+            content = request.get_json()
 
-#         try:
-#             owner_key = client.key(constants.boats, int(owner_id))
-#             client.delete(owner_key)
-#             return ("", 204)
-#         except:
-#             msg = {'Error': 'No owner with this owner_id exists'}
-#             return (msg, 403)
+            owner.update({"first_name": content["first_name"],
+                        "last_name": content["last_name"],
+                        "phone": content["phone"],
+                        "address": content["address"],
+                        "email": content["email"],
+                        "access": content["access"]})
+            client.put(owner)
 
-#     else:
-#         return ('Method not recognized', 405)
+            return "", 200
+        
+        except:
+            return "Sorry didn't work"
+
+
+
+
+
+
+@bp.route('/access/<owner_id>', methods=['GET'])
+def get_access(owner_id):
+    if  request.method == 'GET':
+        query = client.query(kind=constants.owners)
+        results = list(query.fetch())
+
+        for e in results:
+            if str(e["owner_id"]) == str(owner_id):
+                return e["access"]
+            
+        return None
+
+
+
+
 
 
 
@@ -194,44 +258,3 @@ def _has_owner(owner_id):
         
     return None
 
-
-
-
-###################### EXTRA STUFF #######################
-
-# Decode the JWT supplied in the Authorization header
-# @bp.route('/decode', methods=['GET'])
-# def jwt_decode():
-#     payload = verify_jwt(request)
-#     return payload["sub"]
-
-# Generate a JWT from the Auth0 domain and return it
-# Request: JSON body with 2 properties with "username" and "password"
-#       of a user registered with this Auth0 domain
-# Response: JSON with the JWT as the value of the property id_token
-@bp.route('/jwt', methods=['POST'])
-def jwt_get():
-    if not ('application/json' in request.accept_mimetypes):
-            msg = "{'Error': 'Client's acceptable MIME type is not supported by the endpoint'}"
-            return (msg, 406)
-    if not ('application/json' in request.content_type):
-            msg = "{'Error': 'Unsupported MIME type was sent, please send JSON type only'}"
-            return (msg, 415)
-    
-    if request.method == 'POST':
-        content = request.get_json()
-        username = content["username"]
-        password = content["password"]
-        body = {'grant_type':'password',
-                'username':username,
-                'password':password,
-                'client_id':CLIENT_ID,
-                'client_secret':CLIENT_SECRET
-            }
-        headers = { 'content-type': 'application/json' }
-        url = 'https://' + DOMAIN + '/oauth/token'
-        r = requests.post(url, json=body, headers=headers)
-
-        return r.text, 200, {'Content-Type':'application/json'}
-    else:
-        return ('Method not recognized', 405)

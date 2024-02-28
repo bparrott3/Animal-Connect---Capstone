@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Connect</title>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- header -->
+
+    <header class="header">
+
+        <a href="#" class="logo"> <i class="fas fa-paw"></i> Animal Connect</a>
+
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#about">about</a>
+            <a href="#gallery">gallery</a>
+            <a href="#pets">pets</a>
+            <a href="#pricing">pricing</a>
+            <a href="#contact">contact</a>
+        </nav>
+
+
+
+        <div class="icons">
+            <div id="login-btn" class="fas fa-user"> Login</div>
+            <div id="menu-btn" class="fas fa-bars"></div>
+        </div>
+
+
+
+        <!-- by Junior -->
+        <form action="" class="login-form" style="text-align: center; width: 300px; margin: auto;">
+            <button type="button" id="admin-btn" class="btn" style="margin: 10px auto;">Sign in as Admin</button>
+            <button type="button" id="member-btn" class="btn" style="margin: 10px auto;">Sign in as Member</button>
+        </form>
+        <!-- end -->
+        
+        
+
+    </header>
+
+
+    <!-- end -->
+
+    <!-- home -->
+
+    <section class="home" id="home">
+
+        <div class="content">
+            <h3>Swipe, Connect, <br>
+                Adopt: Where Love Finds a Furry Home!<br> </h3>
+            <a href="#" class="btn">Connect</a>
+        </div>
+
+        <img src="./static/images/bottom_wave.png" alt="" class="wave">
+
+    </section>
+
+    <!-- end -->
+
+    <!-- about -->
+
+    <section class="about" id="about">
+
+        <h2 class="deco-title">About us</h2>
+
+        <div class="box-container">
+
+            <div class="image">
+                <img src="./static/images/about.png" alt="">
+            </div>
+
+            <div class="content">
+                <h3 class="title">Our Story of Compassion</h3>
+                <p>Animal Connect: Uniting Hearts, One Adoption at a Time. 🐾💖 Join us in building a world where every
+                    animal finds love and every adoption creates a lifelong bond. Swipe, connect, and make a difference
+                    today! #AnimalConnect #AdoptLove 🐶🐱🐾</p>
+
+                <div class="icons-container">
+                    <div class="icons">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>we educate</h3>
+                    </div>
+                    <div class="icons">
+                        <i class="fas fa-bullhorn"></i>
+                        <h3>we play</h3>
+                    </div>
+                    <div class="icons">
+                        <i class="fas fa-book-open"></i>
+                        <h3>getting to know</h3>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- end -->
+
+    <!-- gallery -->
+
+    <section class="gallery" id="gallery">
+
+        <h2 class="heading">gallery</h2>
+
+        <div class="swiper gallery-slider">
+
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide slide">
+                    <div class="image">
+                        <img src="./static/images/gallery-1.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <div class="image">
+                        <img src="./static/images/gallery-2.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <div class="image">
+                        <img src="./static/images/gallery-3.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <div class="image">
+                        <img src="./static/images/gallery-4.jpg" alt="">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+
+        </div>
+
+    </section>
+
+    <!-- end -->
+
+    <!-- animals -->
+
+    <section class="pets" id="pets">
+
+        <h2 class="heading">Pets</h2>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="./static/images/animal_1.jpg" alt="">
+                <div class="content">
+                    <h3>Fido</h3>
+                    <a href="#" class="btn" onclick="showDetails('fidoDetails')">See Details</a>
+                </div>
+            </div>
+
+           
+
+            <div class="box">
+                <img src="./static/images/animals_2.jpg" alt="">
+                <div class="content">
+                    <h3>zebra</h3>
+                    <a href="#" class="btn">see details</a>
+                </div>
+            </div>
+
+
+            <div class="box">
+                <img src="./static/images/animals_3.jpg" alt="">
+                <div class="content">
+                    <h3>giraffe</h3>
+                    <a href="#" class="btn">see details</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="./static/images/animals_4.jpg" alt="">
+                <div class="content">
+                    <h3>monkey</h3>
+                    <a href="#" class="btn">see details</a>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- end -->
+
+    <!-- banner -->
+
+    <section class="banner">
+
+        <div class="row">
+            <div class="content">
+                <h3>Stay with Pets</h3>
+                <p>
+                    Welcome to Animal Connect, where you can experience the joy of companionship with our lovely animals.
+                </p>
+            </div>
+        </div>
+        
+
+        <div class="image">
+            <img src="./static/images/banner_1.jpg" alt="" width="500" height="300">
+        </div>
+        
+        </div>
+
+    </section>
+
+    <!-- end -->
+
+    <!-- pricing -->
+
+    <section class="pricing" id="pricing">
+
+        <h2 class="heading">pricing</h2>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="./static/images/pricing1.png" alt="">
+                <h3>Basic Pet Adoption</h3>
+                <h4 class="price">$ 29.99/month</h4>
+                <p><br>Access to browse profiles of animals available for adoption.</br>
+                    <br>Limited to local adoption centers within your city.</br>
+                    <br>Standard customer support.</br>
+                    <br>Regular updates on new arrivals.</br></p>
+            </div>
+
+            <div class="box">
+                <img src="./static/images/pricing2.png" alt="">
+                <h3>Premium Pet Lover</h3>
+                <h4 class="price">Price: $49.99/month</h4>
+                <p>All features from the Basic package.<br><br>
+                    Extended access to animal profiles from neighboring cities.<br><br>
+                    Priority customer support.<br><br>
+                    Exclusive early access to newly available animals.<br><br>
+                    Monthly newsletter with heartwarming adoption stories.<br><br></p>
+            </div>
+
+            <div class="box">
+                <img src="./static/images/pricing1.png" alt="">
+                <h3>VIP Animal Companion</h3>
+                <h4 class="price">$79.99/month</h4>
+                <p>All features from the Premium package.<br><br>
+                    Nationwide access to animal profiles, expanding your adoption options.<br><br>
+                    24/7 VIP customer support hotline.<br><br>
+                    Personalized matchmaking with advanced algorithms to find your perfect pet.<br><br>
+                    Invitation to exclusive events and community gatherings.<br><br></p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- end -->
+
+    <!-- contact -->
+
+    <section class="contact" id="contact">
+
+        <h2 class="heading">contact</h2>
+
+        <form action="">
+
+            <div class="inputBox">
+                <input type="text" placeholder="name">
+                <input type="email" placeholder="email">
+            </div>
+
+            <div class="inputBox">
+                <input type="number" placeholder="number">
+                <input type="text" placeholder="subject">
+            </div>
+
+            <textarea name="" id="" cols="30" rows="10" placeholder="message"></textarea>
+
+            <a href="#" class="btn">send message</a>
+
+        </form>
+
+    </section>
+
+    <!-- end -->
+
+    <!-- footer -->
+
+    <section class="footer">
+
+        <div class="box-container">
+
+            <div class="box">
+                <h3><i class="fas fa-paw"></i> Animal Connect</h3>
+                <p>Welcome to Animal Connect, where love knows no bounds!</p>
+                <p class="links"><i class="fas fa-clock"></i>monday - friday</p>
+                <p class="days">7:00AM - 11:00PM</p>
+            </div>
+
+            <div class="box">
+                <h3>Contact Info</h3>
+                <a href="#" class="links"><i class="fas fa-phone"></i> 1245-147-2589</a>
+                <a href="#" class="links"><i class="fas fa-phone"></i> 1445-047-2092</a>
+                <a href="#" class="links"><i class="fas fa-envelope"></i> animalconnect@gmail.com</a>
+                <a href="#" class="links"><i class="fas fa-map-marker-alt"></i> Washington, United States</a>
+            </div>
+
+            <div class="box">
+                <h3>quick links</h3>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i>home</a>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i>about</a>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i>gallery</a>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i>pets</a>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i>pricing</a>
+            </div>
+
+            <div class="box">
+                <h3>newsletter</h3>
+                <p>subscribe for latest updates</p>
+                <input type="email" placeholder="Your Email" class="email">
+                <a href="#" class="btn">subscribe</a>
+                <div class="share">
+                    <a href="#" class="fab fa-facebook-f"></a>
+                    <a href="#" class="fab fa-twitter"></a>
+                    <a href="#" class="fab fa-instagram"></a>
+                    <a href="#" class="fab fa-linkedin"></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="credit">&copy; 2024 Animal Connect. All rights reserved by <a href="#" class="link">AI Coders</a>
+        </div>
+
+    </section>
+
+
+
+
+
+
+    <!-- end -->
+
+
+    <script>
+        let loginBtn = document.getElementById('login-btn');
+        fetch("https://final-project-407620.wl.r.appspot.com/jwt", {
+                method: 'GET'
+            })
+            .then(function(res) {
+                return res.text();
+            })
+            .then(function(output) {
+                var jwt = output;
+                
+                if (jwt !== "") {
+                    loginBtn.textContent = ' Logout';
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
+            
+        let login = document.querySelector(".header .login-form");
+        let navbar = document.querySelector(".header .navbar");
+
+        document.querySelector("#login-btn").onclick = function() {
+
+            if (this.textContent.trim() === "Login") {
+                login.classList.toggle('active');
+                navbar.classList.remove('active');
+            } else {
+                window.location.href = "https://final-project-407620.wl.r.appspot.com/logout";
+                loginBtn.textContent = ' Login';
+            }
+        };
+
+        document.querySelector("#admin-btn").onclick = function() {
+            window.location.href = "https://final-project-407620.wl.r.appspot.com/admin-login";
+        };
+
+        document.querySelector("#member-btn").onclick = function() {
+            window.location.href = "https://final-project-407620.wl.r.appspot.com/member-login";
+        };
+
+
+
+
+
+        document.querySelector('#menu-btn').onclick = () =>{
+            login.classList.remove('active');
+            navbar.classList.toggle('active');
+        };
+
+        window.onscroll = () =>{
+            login.classList.remove('active');
+            navbar.classList.remove('active');
+        };
+
+        var swiper = new Swiper(".gallery-slider", {
+            grabCursor:true,
+            loop:true,
+            centeredSlides:true,
+            spaceBetween:20,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                0:{
+                    slidesPerView:1,
+                },
+                700:{
+                    slidesPerView:2,
+                },
+            }
+        });
+
+
+        function showDetails(detailsId) {
+            var detailsModal = document.getElementById(detailsId);
+            detailsModal.style.display = "block";
+        };
+
+        function closeDetails(detailsId) {
+            var detailsModal = document.getElementById(detailsId);
+            detailsModal.style.display = "none";
+        };
+    </script>
+
+ 
+
+
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+
+    
+
+
+
+</body>
+
+</html>

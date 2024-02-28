@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Information</title>
+</head>
+<body>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Owner ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Access</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- User data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchUserData();
+        });
+
+        function fetchUserData() {
+            fetch('https://final-project-407620.wl.r.appspot.com/owners')
+                .then(response => response.json())
+                .then(users => {
+                    users.forEach(user => {
+                        populateTable(user);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error);
+                });
+        }
+
+        function populateTable(user) {
+            const tableBody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+            const newRow = tableBody.insertRow();
+
+            const cellOwnerId = newRow.insertCell();
+            cellOwnerId.textContent = user.owner_id;
+
+            const cellFirstName = newRow.insertCell();
+            const inputFirstName = document.createElement('input');
+            inputFirstName.value = user.first_name;
+            cellFirstName.appendChild(inputFirstName);
+
+            const cellLastName = newRow.insertCell();
+            const inputLastName = document.createElement('input');
+            inputLastName.value = user.last_name;
+            cellLastName.appendChild(inputLastName);
+
+            const cellPhone = newRow.insertCell();
+            const inputPhone = document.createElement('input');
+            inputPhone.value = user.phone;
+            cellPhone.appendChild(inputPhone);
+
+            const cellAddress = newRow.insertCell();
+            const inputAddress = document.createElement('input');
+            inputAddress.value = user.address;
+            cellAddress.appendChild(inputAddress);
+
+            const cellEmail = newRow.insertCell();
+            const inputEmail = document.createElement('input');
+            inputEmail.value = user.email;
+            cellEmail.appendChild(inputEmail);
+
+            const cellAccess = newRow.insertCell();
+            const inputAccess = document.createElement('input');
+            inputAccess.value = user.access;
+            cellAccess.appendChild(inputAccess);
+
+            const cellActions = newRow.insertCell();
+            const updateButton = document.createElement('button');
+            updateButton.textContent = 'Update';
+            updateButton.addEventListener('click', function() {
+                updateUser(user.id, inputFirstName.value, inputLastName.value, inputPhone.value, inputAddress.value, inputEmail.value, inputAccess.value);
+            });
+            cellActions.appendChild(updateButton);
+        }
+
+        function updateUser(id, first_name, last_name, phone, address, email, access) {
+
+            first_name = first_name ? first_name.toString() : '';
+            last_name = last_name ? last_name.toString() : '';
+            phone = phone ? phone.toString() : '';
+            address = address ? address.toString() : '';
+            email = email ? email.toString() : '';
+            access = access ? access.toString() : '';
+
+            fetch(`https://final-project-407620.wl.r.appspot.com/owners/database/${id}`, 
+            {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "phone": phone,
+                    "address": address,
+                    "email": email,
+                    "access": access}),
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json().then(data => {
+                        console.log('User updated:', data);
+                        alert('User updated successfully! Response status: ' + response.status);
+                    });
+                } else {
+                    throw new Error('Failed to update user. Status code: ' + response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating user:', error);
+                alert('Error updating user: ' + error.message);
+            });
+        }
+
+    </script>
+</body>
+</html>
