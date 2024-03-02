@@ -4,8 +4,10 @@ from flask import Flask
 from flask import redirect, render_template, session, url_for
 from six.moves.urllib.parse import urlencode
 from authlib.integrations.flask_client import OAuth
+from flask import flash
 
 import owners
+import constants
 import requests
 
 app = Flask(__name__)
@@ -37,43 +39,45 @@ oauth.register(
 
 
 @app.route('/')
-def home():
+def backpage():
     user_obj = session.get('user')
-    
-    return render_template("home.html", user_obj=user_obj)
-
-
-@app.route('/users')
-def users():
-    user_obj = session.get('user')
-    user_id = user_obj["userinfo"]["sub"]
-    url = "https://final-project-407620.wl.r.appspot.com/owners/access/" + user_id
-    if user_obj:
-        res = requests.get(url)
-        if res.text == "admin":
-            return render_template("users.html")
-        else:
-            return ("Admin privilege only", 401)
-    return ("Admin privilege only", 401)
-
+    return render_template("backpage.html", user_obj=user_obj)
 
 @app.route('/animal')
 def animal():
     return render_template("animal.html")
 
+
+@app.route('/flash')
+def flash():
+    return render_template("flash.html")
+
+
+
+
 @app.route('/database')
 def database():
-    user_obj = session.get('user')
-    user_id = user_obj["userinfo"]["sub"]
-    url = "https://final-project-407620.wl.r.appspot.com/owners/access/" + user_id
-    if user_obj:
-        res = requests.get(url)
-        if res.text == "admin":
-            return render_template("database.html")
-            # return redirect("steven's url")
-        else:
-            return ("Admin privilege only", 401)
-    return ("Admin privilege only", 401)
+    access = get_access()
+    
+    if access == 1:
+        return render_template("database.html")
+        # return redirect("steven's url")
+    else:
+        return redirect("https://final-project-407620.wl.r.appspot.com/flash")
+
+
+@app.route('/users')
+def users():
+    access = get_access()
+    
+    if access == 1:
+        return render_template("users.html")
+    else:
+        return redirect("https://final-project-407620.wl.r.appspot.com/flash")
+    
+    
+
+
 
 @app.route("/admin-login")
 def admin_login():
@@ -155,6 +159,20 @@ def jwt():
         return user_jwt
     
     return ""
+
+@app.route('/access', methods=["GET"])
+def get_access():
+    user_obj = session.get('user')
+    try:
+        owner_id = user_obj["userinfo"]["sub"]
+        query = client.query(kind=constants.owners)
+        results = list(query.fetch())
+        
+        for e in results:
+            if str(e["owner_id"]) == str(owner_id):
+                return  int(e["access"])
+    except:
+        return 0
 
 
 

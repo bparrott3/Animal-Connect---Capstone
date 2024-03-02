@@ -30,18 +30,33 @@
             <a href="#pets">pets</a>
             <a href="#pricing">pricing</a>
             <a href="#contact">contact</a>
+
+            <a id="adminLink" href="https://final-project-407620.wl.r.appspot.com/database">database</a>
         </nav>
+
+        <style>
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            #adminLink {
+                display: none;
+            }
+        </style>
 
 
 
         <div class="icons">
             <div id="login-btn" class="fas fa-user"> Login</div>
+
             <div id="menu-btn" class="fas fa-bars"></div>
         </div>
 
 
 
-        <!-- by Junior -->
+        <!-- This part replaces the entire login form -->
         <form action="" class="login-form" style="text-align: center; width: 300px; margin: auto;">
             <button type="button" id="admin-btn" class="btn" style="margin: 10px auto;">Sign in as Admin</button>
             <button type="button" id="member-btn" class="btn" style="margin: 10px auto;">Sign in as Member</button>
@@ -361,8 +376,26 @@
 
     <!-- end -->
 
-
     <script>
+        // this is to toggle the 'database' link in the nav bar
+        fetch("https://final-project-407620.wl.r.appspot.com/access", {
+                method: 'GET'
+            })
+            .then(function(res) {
+                return res.text();
+            })
+            .then(function(output) {
+                
+                if (int(output) == 1) {
+                    document.getElementById("adminLink").style.display = "block";
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
+        
+        // this is the login button
         let loginBtn = document.getElementById('login-btn');
         fetch("https://final-project-407620.wl.r.appspot.com/jwt", {
                 method: 'GET'
@@ -381,25 +414,31 @@
                 console.log(error);
             });
 
-            
+        
+        // this is for the login form
         let login = document.querySelector(".header .login-form");
         let navbar = document.querySelector(".header .navbar");
 
         document.querySelector("#login-btn").onclick = function() {
 
+            // if the button says 'login'
+            // make the login form active
             if (this.textContent.trim() === "Login") {
                 login.classList.toggle('active');
                 navbar.classList.remove('active');
+            
+            // if the button says 'logout'
             } else {
                 window.location.href = "https://final-project-407620.wl.r.appspot.com/logout";
                 loginBtn.textContent = ' Login';
             }
         };
 
+        // if logs in as admin, go to the admin-login url
         document.querySelector("#admin-btn").onclick = function() {
             window.location.href = "https://final-project-407620.wl.r.appspot.com/admin-login";
         };
-
+        // if logs in as member, go to the member-login url
         document.querySelector("#member-btn").onclick = function() {
             window.location.href = "https://final-project-407620.wl.r.appspot.com/member-login";
         };

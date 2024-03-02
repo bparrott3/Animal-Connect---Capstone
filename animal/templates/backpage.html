@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+		<title>Auth0 App</title> 
+	</head> 
+
+    <style> 
+        pre
+        {
+            width:450px; 
+            word-wrap:break-word;
+            text-align: left;
+        }
+    </style>
+
+ 
+	<body>
+        {% if session %}
+            <center>
+            <h1>Welcome {{user_obj.userinfo.nickname}}!</h1>
+            <p><a href="/logout">Logout</a></p>
+            <br>
+            <br>
+            <b><p>Your owner_id is: </p></b>
+            <p>{{user_obj.userinfo.sub}}</p>
+            <br>
+            <br>
+            <b><p>Your JWT is: </p></b>
+            </center>
+
+            <div><pre>{{user_obj.id_token}}</pre></div>
+
+
+        {% else %}
+            <center>
+            <h1>Welcome Guest</h1>
+            <p><a href="https://final-project-407620.wl.r.appspot.com/animal">Animal Shelter Homepage</a></p>
+            </center>
+        {% endif %}
+    </body>
+    
+</html> 

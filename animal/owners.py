@@ -138,8 +138,10 @@ def add_admin():
                             "phone": "",
                             "address": "",
                             "email": payload["email"],
-                            "access": "admin"
+                            "access": 1
                             })
+            client.put(new_owner)
+            new_owner["id"] = new_owner.key.id
             new_owner["self"] = request.base_url + "/" + jwt_sub
             client.put(new_owner)
 
@@ -172,8 +174,10 @@ def add_member():
                             "phone": "",
                             "address": "",
                             "email": payload["email"],
-                            "access": "member"
+                            "access": 0
                             })
+            client.put(new_owner)
+            new_owner["id"] = new_owner.key.id
             new_owner["self"] = request.base_url + "/" + jwt_sub
             client.put(new_owner)
 
@@ -208,7 +212,7 @@ def patch_owners(id):
         owner = client.get(key=owner_key)
         if not owner:
             return "Owner not found", 404
-    
+
         try:
             content = request.get_json()
 
@@ -224,24 +228,6 @@ def patch_owners(id):
         
         except:
             return "Sorry didn't work"
-
-
-
-
-
-
-@bp.route('/access/<owner_id>', methods=['GET'])
-def get_access(owner_id):
-    if  request.method == 'GET':
-        query = client.query(kind=constants.owners)
-        results = list(query.fetch())
-
-        for e in results:
-            if str(e["owner_id"]) == str(owner_id):
-                return e["access"]
-            
-        return None
-
 
 
 
