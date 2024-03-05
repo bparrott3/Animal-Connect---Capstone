@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Animal Profile</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fff; /* White background */
+            color: #333; /* Dark text for readability */
+            padding: 20px;
+        }
+
+        h1 {
+            color: #ff8c00; /* Orange text */
+        }
+
+        form {
+            background-color: #fff; /* White background */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            color: #ff8c00; /* Orange text */
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd; /* Light grey border */
+            box-sizing: border-box; /* Ensures padding does not affect width */
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #ff8c00; /* Orange background */
+            color: #fff; /* White text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e85d00; /* Darker orange on hover */
+        }
+        .disposition {
+            display: flex;
+            align-items: center;
+            margin-top: 5px; /* Adjust spacing as needed */
+        }
+        
+        .disposition label {
+            margin-right: 10px; /* Space between the label and the checkbox */
+        }
+
+        .disposition input[type="checkbox"] {
+            margin-top: 25px; /* Adjusts the position of the checkbox slightly downwards */
+        }
+    </style>
+</head>
+<body>
+    <h1>Add New Animal Profile</h1>
+    <a href="/shelter">Back</a>
+    <br>
+    <br>
+    
+    <form id="addProfileForm" action="/profiles/new" method="post" enctype="multipart/form-data">
+        <label for="shelter">Shelter:</label>
+        <input type="text" id="shelter_id" name="shelter_id" value="" readonly />
+        
+        <label for="type">Type:</label>
+        <select id="type" name="type">
+            <option value="Dog">Dog</option>
+            <option value="Cat">Cat</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="breed">Breed:</label>
+        <input type="text" id="breed" name="breed" required>
+
+        <label for="disposition">Disposition:</label>
+        <div class="disposition">
+            <label for="goodWithAnimals">Good with other animals</label>
+            <input type="checkbox" id="goodWithAnimals" name="disposition" value="Good with other animals">
+        </div>
+        <div class="disposition">
+            <label for="goodWithChildren">Good with children</label>
+            <input type="checkbox" id="goodWithChildren" name="disposition" value="Good with children">
+        </div>
+        <div class="disposition">
+            <label for="mustBeLeashed">Animal must be leashed at all times</label>
+            <input type="checkbox" id="mustBeLeashed" name="disposition" value="Animal must be leashed at all times">
+        </div>
+
+        <label for="availability">Availability:</label>
+        <select id="availability" name="availability">
+            <option value="Not Available">Not Available</option>
+            <option value="Available">Available</option>
+            <option value="Pending">Pending</option>
+            <option value="Adopted">Adopted</option>
+        </select>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="image">Image URL:</label>
+        <input type="text" id="image" name="image">
+
+        <button type="submit">Add Profile</button>
+    </form>
+
+    <script>
+        fetch('https://final-project-407620.wl.r.appspot.com/shelter/id')
+        .then(function(res) {
+            return res.text();
+        })
+        .then(function(output) {
+            console.log(output);
+
+            document.getElementById('shelter_id').value = output;
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    </script>
+
+
+</body>
+</html>

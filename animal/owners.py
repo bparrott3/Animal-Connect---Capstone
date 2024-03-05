@@ -133,12 +133,11 @@ def add_admin():
         else:
             new_owner = datastore.entity.Entity(key=client.key(constants.owners))
             new_owner.update({"owner_id": jwt_sub,
-                            "first_name": "",
-                            "last_name": "", 
+                            "name": "",
                             "phone": "",
                             "address": "",
                             "email": payload["email"],
-                            "access": 1
+                            "access": "Admin"
                             })
             client.put(new_owner)
             new_owner["id"] = new_owner.key.id
@@ -169,12 +168,11 @@ def add_member():
         else:
             new_owner = datastore.entity.Entity(key=client.key(constants.owners))
             new_owner.update({"owner_id": jwt_sub,
-                            "first_name": "",
-                            "last_name": "", 
+                            "name": "",
                             "phone": "",
                             "address": "",
                             "email": payload["email"],
-                            "access": 0
+                            "access": "Member"
                             })
             client.put(new_owner)
             new_owner["id"] = new_owner.key.id
@@ -199,9 +197,9 @@ def get_owner(owner_id):
 
         for e in results:
             if str(e["owner_id"]) == str(owner_id):
-                return (json.dumps(e), 200)
+                return e
 
-        return ('User not found', 404)
+        return 'User not found'
     
 
 
@@ -216,8 +214,7 @@ def patch_owners(id):
         try:
             content = request.get_json()
 
-            owner.update({"first_name": content["first_name"],
-                        "last_name": content["last_name"],
+            owner.update({"name": content["name"],
                         "phone": content["phone"],
                         "address": content["address"],
                         "email": content["email"],

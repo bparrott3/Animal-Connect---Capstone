@@ -8,8 +8,7 @@
         <thead>
             <tr>
                 <th>Owner ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
                 <th>Email</th>
@@ -20,13 +19,12 @@
         <tbody>
             <!-- User data will be inserted here -->
         </tbody>
-
     </table>
 
     <br>
     <br>
     <div>
-        <a href="/database">Database</a>
+        <a href="/">Back to Homepage</a>
     </div>
 
     <script>
@@ -36,22 +34,18 @@
 
         function fetchUserData() {
             fetch('https://final-project-407620.wl.r.appspot.com/owners')
-            .then(function(res) 
-            {
+            .then(function(res) {
                 return res.json();
             })
-            .then(function(output) 
-            {
+            .then(function(output) {
                 console.log(output);
                 output.forEach(output => {
-                        populateTable(output);
-                    });
+                    populateTable(output);
+                });
             })
-            .catch(function(error)
-            {
+            .catch(function(error) {
                 console.log(error);
             });
-        
         }
 
         function populateTable(user) {
@@ -61,15 +55,10 @@
             const cellOwnerId = newRow.insertCell();
             cellOwnerId.textContent = user.owner_id;
 
-            const cellFirstName = newRow.insertCell();
-            const inputFirstName = document.createElement('input');
-            inputFirstName.value = user.first_name;
-            cellFirstName.appendChild(inputFirstName);
-
-            const cellLastName = newRow.insertCell();
-            const inputLastName = document.createElement('input');
-            inputLastName.value = user.last_name;
-            cellLastName.appendChild(inputLastName);
+            const cellName = newRow.insertCell();
+            const inputName = document.createElement('input');
+            inputName.value = user.name;
+            cellName.appendChild(inputName);
 
             const cellPhone = newRow.insertCell();
             const inputPhone = document.createElement('input');
@@ -95,57 +84,46 @@
             const updateButton = document.createElement('button');
             updateButton.textContent = 'Update';
             updateButton.addEventListener('click', function() {
-                updateUser(user, user.id, inputFirstName.value, inputLastName.value, inputPhone.value, inputAddress.value, inputEmail.value, inputAccess.value);
+                updateUser(user, user.id, inputName.value, inputPhone.value, inputAddress.value, inputEmail.value, inputAccess.value);
             });
             cellActions.appendChild(updateButton);
         }
 
-        function updateUser(user, id, first_name, last_name, phone, address, email, access) {
-
-            first_name = first_name ? first_name.toString() : '';
-            last_name = last_name ? last_name.toString() : '';
+        function updateUser(user, id, name, phone, address, email, access) {
+            name = name ? name.toString() : '';
             phone = phone ? phone.toString() : '';
             address = address ? address.toString() : '';
             email = email ? email.toString() : '';
 
-
             let url = `https://final-project-407620.wl.r.appspot.com/owners/database/${id}`;
-            
-            let body = 
-            {
-                'first_name': first_name,
-                'last_name': last_name,
+
+            let body = {
+                'name': name,
                 'phone': phone,
                 'address': address,
                 'email': email,
                 'access': access
             };
 
-            let info =
-            {
+            let info = {
                 method: 'PATCH',
                 body: JSON.stringify(body),
-                headers: new Headers
-                ({
+                headers: new Headers({
                     'Content-Type': 'application/json',
                 })
             };
 
             fetch(url, info)
-            .then(function(res) 
-            {
+            .then(function(res) {
                 return res.json();
             })
-            .then(function(output) 
-            {
+            .then(function(output) {
                 console.log(output);
             })
-            .catch(function(error)
-            {
+            .catch(function(error) {
                 console.log(error);
             });
         };
-
     </script>
 </body>
 </html>
