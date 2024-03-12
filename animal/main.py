@@ -93,6 +93,9 @@ def admin_callback():
     
   
 
+@app.route('/member-flash')
+def member_flash():
+    return render_template("member_flash.html")
 
 
 @app.route("/member-login")
@@ -189,45 +192,78 @@ def get_shelter_id():
     user_obj = session.get('user')
     try:
         owner_id = user_obj["userinfo"]["sub"]
-        return  owner_id
+
+        query = client.query(kind=constants.owners)
+        results = list(query.fetch())
+
+        for e in results:
+            if str(e["owner_id"]) == str(owner_id):
+                return  str(e["id"])
+    except:
+        return ""
+    
+
+
+def get_owner_id():
+    user_obj = session.get('user')
+    try:
+        owner_id = user_obj["userinfo"]["sub"]
+
+        return owner_id
+
     except:
         return ""
 
+
 @app.route('/shelter')
 def shelter():
-    # You can now use shelter_id to fetch data specific to this shelter from your database
-    # For example:
-    conn = get_db_connection()
+    access = get_access()
     
-    hard_id = 1
-    shelter_id = get_shelter_id()
-    owner_info = owners.get_owner(shelter_id)
-    
-    # Assuming conn is your MySQL connection object and shelter_id is defined
-    cursor = conn.cursor(dictionary=True)  # Use dictionary=True to get results as dictionaries
-    
-    query = 'SELECT * FROM Animal_Profiles WHERE shelter_id = %s'
-    cursor.execute(query, (hard_id,))
-    # Fetch all results
-    pet_profiles = cursor.fetchall()
+    if access.lower() == "member":
+        # You can now use shelter_id to fetch data specific to this shelter from your database
+        # For example:
+        conn = get_db_connection()
+        
+        # hard_id = 1
+        shelter_id = get_shelter_id()
 
-    cursor.close()
-    conn.close()
+        owner_id = get_owner_id()
+        owner_info = owners.get_owner(owner_id)
+        
+        # Assuming conn is your MySQL connection object and shelter_id is defined
+        cursor = conn.cursor(dictionary=True)  # Use dictionary=True to get results as dictionaries
+        
+        query = 'SELECT * FROM Animal_Profiles WHERE shelter_id = %s'
+        cursor.execute(query, (shelter_id,))
+        # Fetch all results
+        pet_profiles = cursor.fetchall()
 
-    return render_template('shelter.html', owner_info=owner_info, pet_profiles=pet_profiles)
+        cursor.close()
+        conn.close()
+
+        return render_template('shelter.html', owner_info=owner_info, pet_profiles=pet_profiles)
+    else:
+        return redirect("https://final-project-407620.wl.r.appspot.com/member-flash")
+    
 
 
 
 
 @app.route('/new-profile')
 def new_profile():
-    return render_template('add_profile.html')
+    access = get_access()
+    
+    if access.lower() == "member":
+        return render_template('add_profile.html')
+    else:
+        return redirect("https://final-project-407620.wl.r.appspot.com/member-flash")
+    
 
 # for adding a new animal profile
 @app.route('/profiles/new', methods=['POST'])
 def add_profile():
     # Get form data
-    shelter_id = request.form['shelter_id']
+    shelter_id = int(request.form['shelter_id'])
     animal_type = request.form['type']
     breed = request.form['breed']
     disposition = request.form.getlist('disposition')  # Assuming disposition is a list of checkboxes
