@@ -52,13 +52,16 @@ def animal_profiles():
     
     query = "SELECT * FROM Animal_Profiles"
     cursor.execute(query)
-    
     profiles = cursor.fetchall()  # Fetch all rows from the query result
     
+    query2 = "SELECT * FROM Shelters"    
+    cursor.execute(query2)
+    shelters = cursor.fetchall()  # Fetch all rows from the query result
+        
     cursor.close()
     conn.close()
     
-    return render_template('animal_profiles.html', profiles=profiles)
+    return render_template('animal_profiles.html', profiles=profiles, shelters=shelters)
 
 # @app.route('/insert_animal_profiles', methods=['GET', 'POST'])
 # def insert_animal_profiles():

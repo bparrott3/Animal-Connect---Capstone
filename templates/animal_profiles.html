@@ -5,9 +5,101 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Animals</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="./static/css/style.css"> 
+    <style>
+        body {
+            background-color: #fff; /* White background */
+            color: #333; /* Dark text for readability */
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+
+        .site-header h1 {
+            color: #ff8c00; /* Orange text */
+            text-align: center;
+        }
+
+        .filter-section {
+            background-color: #ffedd5; /* Light orange background for filter section */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .select-style, .input-style {
+            padding: 10px;
+            margin-top: 5px;
+            margin-right: 10px;
+            border: 1px solid #ddd; /* Light grey border */
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures padding does not affect width */
+        }
+
+        .btn-filter {
+            background-color: #ff8c00; /* Orange background */
+            color: #fff; /* White text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .btn-filter:hover {
+            background-color: #e85d00; /* Darker orange on hover */
+        }
+
+        .profile-section {
+            background-color: #fff; /* White background */
+            padding: 15px;
+        }
+
+        .profile-list {
+            list-style-type: none; /* Remove default list styling */
+            padding: 0;
+        }
+
+        .profile-item {
+            margin-bottom: 20px; /* Spacing between profiles */
+            width: 150%; /* Increased width */
+        }
+
+        .profile-card {
+            background-color: #ffedd5; /* Light orange background for profiles */
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Space out the image and info */
+        }
+
+        .profile-image {
+            width: 150px; /* Adjusted smaller image size */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        .info-container {
+            display: flex; /* Display Animal Info and Shelter Info side by side */
+            width: 80%; /* Increased info section width */
+        }
+
+        .profile-info, .shelter-info {
+            margin-right: 10px;
+            flex: 1; /* Both columns take up equal space */
+            min-width: 0; /* Ensure flex shrinkage does not hide content */
+        }
+
+        .profile-info div, .shelter-info div {
+            margin-bottom: 10px; /* Spacing within info */
+        }
+
+        .profile-info-title, .shelter-info-title {
+            font-weight: bold;
+            color: #ff8c00; /* Orange text */
+            margin-bottom: 10px; /* Space below titles */
+        }
+    </style>
 </head>
 <body>
     <header class="site-header">
@@ -59,12 +151,26 @@
                 <li class="profile-item">
                     <div class="profile-card">
                         <img src="{{ profile['image'] }}" alt="Animal Image" class="profile-image">
-                        <div class="profile-info">
-                            <div>Type: {{ profile['type'] }}</div>
-                            <div>Breed: {{ profile['breed'] }}</div>
-                            <div>Disposition: {{ profile['disposition'] }}</div>
-                            <div>Availability: {{ profile['availibility'] }}</div>
-                            <div>Description: {{ profile['description'] }}</div>
+                        <div class="info-container">
+                            <div class="profile-info">
+                                <div class="profile-info-title">Animal Info</div>
+                                <div>Type: {{ profile['type'] }}</div>
+                                <div>Breed: {{ profile['breed'] }}</div>
+                                <div>Disposition: {{ profile['disposition'] }}</div>
+                                <div>Availability: {{ profile['availability'] }}</div>
+                                <div>Description: {{ profile['description'] }}</div>
+                            </div>
+                            <div class="shelter-info">
+                                <div class="shelter-info-title">Shelter Info</div>
+                                {% for shelter in shelters %}
+                                    {% if profile['shelter_id'] == shelter['id'] %}
+                                        <div><strong>{{ shelter['name'] }}</strong></div>
+                                        <div>{{ shelter['email'] }}</div>
+                                        <div>{{ shelter['phone'] }}</div>
+                                        <div>{{ shelter['address'] }}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -72,6 +178,7 @@
         </ul>
     </section>
 
-    <script src="./static/js/browse.js"></script> <!-- JavaScript for dynamic content and filters -->
+    {% comment %} <script src="./static/js/browse.js"></script> <!-- JavaScript for dynamic content and filters --> {% endcomment %}
 </body>
 </html>
+
