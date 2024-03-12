@@ -1,6 +1,6 @@
 from urllib.parse import quote_plus
 from google.cloud import datastore
-from flask import Flask
+from flask import Flask, request
 from flask import redirect, render_template, session, url_for
 from six.moves.urllib.parse import urlencode
 from authlib.integrations.flask_client import OAuth
@@ -175,13 +175,20 @@ def pets():
     
     query = "SELECT * FROM Animal_Profiles"
     cursor.execute(query)
-    
     profiles = cursor.fetchall()  # Fetch all rows from the query result
-    
+
+    sid = None
+    try:
+        owner_id = get_owner_id()
+        shelter = owners.get_owner(owner_id)
+        sid = int(shelter["shelter_id"])
+    except:
+        sid = ""
+
     cursor.close()
     conn.close()
 
-    return render_template('animal_profiles.html', profiles=profiles)
+    return render_template('animal_profiles.html', profiles=profiles, shelter=shelter, sid=sid)
 
 
 
@@ -198,7 +205,7 @@ def get_shelter_id():
 
         for e in results:
             if str(e["owner_id"]) == str(owner_id):
-                return  str(e["id"])
+                return  str(e["shelter_id"])
     except:
         return ""
     
@@ -224,7 +231,7 @@ def shelter():
         # For example:
         conn = get_db_connection()
         
-        # hard_id = 1
+        
         shelter_id = get_shelter_id()
 
         owner_id = get_owner_id()
@@ -263,36 +270,41 @@ def new_profile():
 @app.route('/profiles/new', methods=['POST'])
 def add_profile():
     # Get form data
-    shelter_id = int(request.form['shelter_id'])
-    animal_type = request.form['type']
-    breed = request.form['breed']
-    disposition = request.form.getlist('disposition')  # Assuming disposition is a list of checkboxes
-    availability = request.form['availability']
-    description = request.form['description']
-    image_url = request.form['image']
-    
-    # Convert disposition list to a string if needed
-    disposition_str = ', '.join(disposition)
-
-    # Connect to the database
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    # SQL Insert Query
-    insert_query = '''
-        INSERT INTO Animal_Profiles (shelter_id, type, breed, disposition, availability, description, image)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-    '''
-    cursor.execute(insert_query, (shelter_id, animal_type, breed, disposition_str, availability, description, image_url))
+    try:
+        shelter_id = request.form['shelter_id']
+        animal_type = request.form['type']
+        breed = request.form['breed']
+        disposition = request.form.getlist('disposition')  # Assuming disposition is a list of checkboxes
+        availability = request.form['availability']
+        description = request.form['description']
+        image_url = request.form['image']
         
-    # Commit the transaction
-    conn.commit()
+        # Convert disposition list to a string if needed
+        disposition_str = ', '.join(disposition)
 
-    # Close the connection
-    cursor.close()
-    conn.close()
-    
-    return redirect("https://final-project-407620.wl.r.appspot.com/shelter")
+        # Connect to the database
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+
+                # SQL Insert Query
+                insert_query = '''
+                    INSERT INTO Animal_Profiles (shelter_id, type, breed, disposition, availability, description, image)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                '''
+                cursor.execute(insert_query, (shelter_id, animal_type, breed, disposition_str, availability, description, image_url))
+                    
+                # Commit the transaction
+                conn.commit()
+
+                # Close the connection
+                cursor.close()
+                conn.close()
+        
+            return redirect("https://final-project-407620.wl.r.appspot.com/shelter")
+        
+    except Exception as e:
+        # Handle the exception (e.g., log the error)
+        return f"An error occurred: {str(e)}", 500  # Return a 500 Internal Server Error response
 
 
 

@@ -53,7 +53,7 @@
             <label for="descriptionSearch">Description Keyword:</label>
             <input type="text" id="descriptionSearch" class="input-style" placeholder="Search in descriptions...">
         
-            <button onclick="fetchProfiles()" class="btn-filter">Filter</button>
+            <button onclick="renderProfiles()">Filter</button>
         </div>
     </section>
     
@@ -62,43 +62,70 @@
             {% for profile in profiles %}
                 <li class="profile-item">
                     <div class="profile-card">
-                        <img src="{{ profile['image'] }}" alt="Animal Image" class="profile-image">
+                        <img src="{{ profile['image'] }}" alt="Animal Image" class="profile-image" style="width: 200px; height: auto;">
                         <div class="profile-info">
                             <div>Type: {{ profile['type'] }}</div>
                             <div>Breed: {{ profile['breed'] }}</div>
                             <div>Disposition: {{ profile['disposition'] }}</div>
-                            <div>Availability: {{ profile['availibility'] }}</div>
+                            <div>Availability: {{ profile['availability'] }}</div>
                             <div>Description: {{ profile['description'] }}</div>
                         </div>
+                        
+                        <div class="shelter-info" style="display: flex; flex-wrap: wrap;">
+                            <div class="shelter-info-title"></div>
+                            <div style="margin-right: 10px;">Shelter's Info >>>  </div>
+                            {% if profile['shelter_id'] == sid %}
+                            <div style="margin-right: 10px;"><strong>{{ shelter['name'] }}'s shelter</strong></div>
+                            <div style="margin-right: 10px;">{{ shelter['email'] }}</div>
+                            <div style="margin-right: 10px;">{{ shelter['phone'] }}</div>
+                            <div>{{ shelter['address'] }}</div>
+                            {% endif %}
+                        </div>
                     </div>
-                </li>
+                </div> 
+            </li>
             {% endfor %}
         </ul>
     </section>
 
-    <script>
-        var profiles = JSON.parse('{{ profiles | tojson | safe }}');
-
-        const container = document.querySelector('.pets-container'); // Ensure this matches your HTML
-        container.innerHTML = ''; // Clear existing profiles
-        
-        profiles.forEach(profile => {
-            const profileElement = document.createElement('div');
-            profileElement.className = 'pet-profile';
-            profileElement.innerHTML = `
-                <img src="${profile.image}" alt="Animal Image" style="width:100px; height:auto; margin-right: 20px;">
-                <div>
-                    <div>Type: ${profile.type}</div>
-                    <div>Breed: ${profile.breed}</div>
-                    <div>Disposition: ${profile.disposition}</div>
-                    <div>Availability: ${profile.availability}</div>
-                    <div>Description: ${profile.description}</div>
-                </div>
-            `;
-            container.appendChild(profileElement);
-        });
+    <input type="hidden" id="pro" value="{{ profiles | tojson | safe }}">
     
+
+
+    <script>
+       function renderProfiles() {
+            var profiles_json = document.getElementById('pro').value;
+            var profiles = JSON.parse(profiles_json);
+            const container = document.querySelector('.profile-section');
+            container.innerHTML = ''; // Clear existing profiles
+
+            // profiles.forEach(profile => {
+            //     const profileElement = document.createElement('li'); // Create a list item for each profile
+            //     profileElement.className = 'profile-item'; // Set the class name to match your CSS
+            //     profileElement.innerHTML = `
+            //         <div class="profile-card">
+            //             <img src="${profile.image}" alt="Animal Image" class="profile-image">
+            //             <div class="profile-info">
+            //                 <div>Type: ${profile.type}</div>
+            //                 <div>Breed: ${profile.breed}</div>
+            //                 <div>Disposition: ${profile.disposition}</div>
+            //                 <div>Availability: ${profile.availability}</div>
+            //                 <div>Description: ${profile.description}</div>
+            //             </div>
+            //             <div class="shelter-info">
+            //                 <div class="shelter-info-title">Shelter Info</div>
+            //                 <div><strong>${profile.shelter.name}</strong></div>
+            //                 <div>${profile.shelter.email}</div>
+            //                 <div>${profile.shelter.phone}</div>
+            //                 <div>${profile.shelter.address}</div>
+            //             </div>
+            //         </div>
+            //     `;
+            //     container.appendChild(profileElement);
+            // });
+        }
     </script>
+
 
 </body>
 </html>

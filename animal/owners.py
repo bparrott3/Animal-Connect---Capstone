@@ -133,6 +133,7 @@ def add_admin():
         else:
             new_owner = datastore.entity.Entity(key=client.key(constants.owners))
             new_owner.update({"owner_id": jwt_sub,
+                            "shelter_id": "Contact Admin for ID",
                             "name": "",
                             "phone": "",
                             "address": "",
@@ -168,6 +169,7 @@ def add_member():
         else:
             new_owner = datastore.entity.Entity(key=client.key(constants.owners))
             new_owner.update({"owner_id": jwt_sub,
+                            "shelter_id": "Contact Admin for ID",
                             "name": "",
                             "phone": "",
                             "address": "",
@@ -214,7 +216,8 @@ def patch_owners(id):
         try:
             content = request.get_json()
 
-            owner.update({"name": content["name"],
+            owner.update({"shelter_id": content["shelter_id"],
+                        "name": content["name"],
                         "phone": content["phone"],
                         "address": content["address"],
                         "email": content["email"],

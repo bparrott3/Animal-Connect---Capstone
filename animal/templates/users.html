@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th>Owner ID</th>
+                <th>Shelter ID</th>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
@@ -53,7 +54,12 @@
             const newRow = tableBody.insertRow();
 
             const cellOwnerId = newRow.insertCell();
-            cellOwnerId.textContent = user.id;
+            cellOwnerId.textContent = user.owner_id;
+
+            const cellShelterId = newRow.insertCell();
+            const inputShelterId = document.createElement('input');
+            inputShelterId.value = user.shelter_id;
+            cellShelterId.appendChild(inputShelterId);
 
             const cellName = newRow.insertCell();
             const inputName = document.createElement('input');
@@ -84,12 +90,12 @@
             const updateButton = document.createElement('button');
             updateButton.textContent = 'Update';
             updateButton.addEventListener('click', function() {
-                updateUser(user, user.id, inputName.value, inputPhone.value, inputAddress.value, inputEmail.value, inputAccess.value);
+                updateUser(user.id, inputShelterId.value, inputName.value, inputPhone.value, inputAddress.value, inputEmail.value, inputAccess.value);
             });
             cellActions.appendChild(updateButton);
         }
 
-        function updateUser(user, id, name, phone, address, email, access) {
+        function updateUser(id, shelter_id, name, phone, address, email, access) {
             name = name ? name.toString() : '';
             phone = phone ? phone.toString() : '';
             address = address ? address.toString() : '';
@@ -98,6 +104,7 @@
             let url = `https://final-project-407620.wl.r.appspot.com/owners/database/${id}`;
 
             let body = {
+                'shelter_id': shelter_id,
                 'name': name,
                 'phone': phone,
                 'address': address,
