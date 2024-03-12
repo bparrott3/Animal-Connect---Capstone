@@ -7,7 +7,96 @@
     <title>Browse Animals</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+        }
 
+        .site-header {
+            background-color: #929194;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .filter-section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .filter-container label {
+            margin-right: 10px;
+        }
+
+        .filter-container select,
+        .filter-container input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .filter-container button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .profile-section {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .profile-item {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .profile-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .shelter-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .shelter-info-title {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <header class="site-header">
@@ -53,7 +142,7 @@
             <label for="descriptionSearch">Description Keyword:</label>
             <input type="text" id="descriptionSearch" class="input-style" placeholder="Search in descriptions...">
         
-            <button onclick="renderProfiles()">Filter</button>
+            <button onclick="renderProfiles" class="btn-filter">Filter</button>
         </div>
     </section>
     
@@ -62,7 +151,7 @@
             {% for profile in profiles %}
                 <li class="profile-item">
                     <div class="profile-card">
-                        <img src="{{ profile['image'] }}" alt="Animal Image" class="profile-image" style="width: 200px; height: auto;">
+                        <img src="{{ profile['image'] }}" alt="Animal Image" class="profile-image">
                         <div class="profile-info">
                             <div>Type: {{ profile['type'] }}</div>
                             <div>Breed: {{ profile['breed'] }}</div>
@@ -88,43 +177,62 @@
         </ul>
     </section>
 
-    <input type="hidden" id="pro" value="{{ profiles | tojson | safe }}">
+
+
     
 
 
     <script>
-       function renderProfiles() {
-            var profiles_json = document.getElementById('pro').value;
-            var profiles = JSON.parse(profiles_json);
-            const container = document.querySelector('.profile-section');
-            container.innerHTML = ''; // Clear existing profiles
 
-            // profiles.forEach(profile => {
-            //     const profileElement = document.createElement('li'); // Create a list item for each profile
-            //     profileElement.className = 'profile-item'; // Set the class name to match your CSS
-            //     profileElement.innerHTML = `
-            //         <div class="profile-card">
-            //             <img src="${profile.image}" alt="Animal Image" class="profile-image">
-            //             <div class="profile-info">
-            //                 <div>Type: ${profile.type}</div>
-            //                 <div>Breed: ${profile.breed}</div>
-            //                 <div>Disposition: ${profile.disposition}</div>
-            //                 <div>Availability: ${profile.availability}</div>
-            //                 <div>Description: ${profile.description}</div>
-            //             </div>
-            //             <div class="shelter-info">
-            //                 <div class="shelter-info-title">Shelter Info</div>
-            //                 <div><strong>${profile.shelter.name}</strong></div>
-            //                 <div>${profile.shelter.email}</div>
-            //                 <div>${profile.shelter.phone}</div>
-            //                 <div>${profile.shelter.address}</div>
-            //             </div>
-            //         </div>
-            //     `;
-            //     container.appendChild(profileElement);
-            // });
+        var newProfiles = ' {{ profiles }}';
+
+        function renderProfiles() {
+            // Get the selected filter values
+            const typeFilter = document.getElementById('typeFilter').value;
+            const breedFilter = document.getElementById('breedFilter').value;
+            const dispositionFilter = document.getElementById('dispositionFilter').value;
+            const availabilityFilter = document.getElementById('availabilityFilter').value;
+            const descriptionSearch = document.getElementById('descriptionSearch').value.toLowerCase();
+
+            // Filter the profiles based on the selected criteria
+            const filteredProfiles = newProfiles.filter(profile => {
+                return (typeFilter === 'all' || profile.type === typeFilter) &&
+                    (breedFilter === 'all' || profile.breed === breedFilter) &&
+                    (dispositionFilter === 'all' || profile.disposition === dispositionFilter) &&
+                    (availabilityFilter === 'all' || profile.availability === availabilityFilter) &&
+                    (descriptionSearch === '' || profile.description.toLowerCase().includes(descriptionSearch));
+            });
+
+            // Generate the HTML for the filtered profiles
+            const profileList = document.querySelector('.profile-list');
+            profileList.innerHTML = ''; // Clear the existing profiles
+            filteredProfiles.forEach(profile => {
+                const profileItem = document.createElement('li');
+                profileItem.className = 'profile-item';
+                profileItem.innerHTML = `
+                    <div class="profile-card">
+                        <img src="${profile.image}" alt="Animal Image" class="profile-image">
+                        <div class="profile-info">
+                            <div>Type: ${profile.type}</div>
+                            <div>Breed: ${profile.breed}</div>
+                            <div>Disposition: ${profile.disposition}</div>
+                            <div>Availability: ${profile.availability}</div>
+                            <div>Description: ${profile.description}</div>
+                        </div>
+                    </div>
+                `;
+                profileList.appendChild(profileItem);
+            });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+        
+        });
+
     </script>
+    
+
+    
 
 
 </body>
